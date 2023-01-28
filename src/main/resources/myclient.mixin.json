@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "net.myclient.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ClientConnectionMixin",
+    "CustomPayloadC2SPacketAccessor",
+    "CustomPayloadS2CPacketAccessor",
+    "FishingBobberEntityMixin",
+    "ClientPlayerEntityMixin",
+    "ClientConnectionInvoker",
+    "ClientWorldInvoker",
+    "ClientPlayerInteractionManagerMixin",
+    "WorldMixin",
+    "MinecraftClientMixin",
+    "GameRendererMixin",
+    "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
