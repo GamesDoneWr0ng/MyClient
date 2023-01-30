@@ -4,11 +4,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.myclient.Main;
 import net.myclient.events.ReceivedPacketListener;
 import net.myclient.events.SentPacketListener;
 import net.myclient.hack.Hack;
-import net.myclient.hack.HackManager;
 import net.myclient.mixin.CustomPayloadC2SPacketAccessor;
 import net.myclient.mixin.CustomPayloadS2CPacketAccessor;
 import org.apache.logging.log4j.LogManager;
@@ -35,8 +33,6 @@ public class PacketLogger extends Hack implements SentPacketListener, ReceivedPa
             LOGGER.info("Received packet with channel '{}'", channel);
             return;
         }
-
-
 
         LOGGER.info("Received packet with name '{}'", packet.getClass().getName());
         assert MinecraftClient.getInstance().player != null;
