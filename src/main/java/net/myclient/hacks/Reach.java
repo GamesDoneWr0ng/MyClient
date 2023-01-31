@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Reach extends Hack implements SentPacketListener {
     private Packet<?> lastpacket;
@@ -25,14 +26,17 @@ public class Reach extends Hack implements SentPacketListener {
     @Override
     public void onSentPacket(SentPacketEvent event) {
         Packet<?> packet = event.getPacket();
-        if (lastpacket instanceof PlayerInteractEntityC2SPacket || lastpacket instanceof PlayerActionC2SPacket) {return;}
+        if (lastpacket instanceof PlayerInteractEntityC2SPacket || lastpacket instanceof PlayerActionC2SPacket) {
+            lastpacket = null;
+            return;
+        }
         lastpacket = packet;
 
         if (packet instanceof HandSwingC2SPacket) {
             PlayerEntity player = MinecraftClient.getInstance().player;
             assert player != null;
             Vec3d viewDir = getViewDirection(player);
-            List<Entity> entities = (List<Entity>) MinecraftClient.getInstance().world.getEntities();
+            List<Entity> entities = StreamSupport.stream(MinecraftClient.getInstance().world.getEntities().spliterator(), false).toList();
             TargetedEntityFilter filter = new TargetedEntityFilter(aimAssist, player.getPos(), viewDir);
             List<Entity> filteredEntities = entities.stream().filter(filter::test).toList();
             Entity closest = getClosestEntity(filteredEntities, player.getPos(), viewDir);
