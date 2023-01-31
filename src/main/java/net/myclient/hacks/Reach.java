@@ -40,7 +40,7 @@ public class Reach extends Hack implements SentPacketListener {
         }
     }
 
-    public static Entity getEntityFromRay(World world, PlayerEntity player, double range) {
+    private Entity getEntityFromRay(World world, PlayerEntity player, double range) {
         Vec3d playerPos = player.getEyePos();
         Vec3d lookVec = player.getRotationVec(1.0F);
         Vec3d endPos = playerPos.add(lookVec.multiply(range));
@@ -54,7 +54,7 @@ public class Reach extends Hack implements SentPacketListener {
             Vec3d entityPos = entity.getPos();
             Vec3d rayVec = entityPos.subtract(playerPos);
 
-            if (lookVec.normalize().dotProduct(rayVec.normalize()) > Math.cos(Math.toRadians(5))) {
+            if (lookVec.normalize().dotProduct(rayVec.normalize()) > Math.cos(Math.toRadians(aimAssist))) {
                 double distance = rayVec.lengthSquared();
                 if (distance < closestDistance) {
                     closestEntity = entity;
