@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class AutoFish extends Hack implements ReceivedPacketListener, CaughtFishListener {
-    private Logger LOGGER = LoggerFactory.getLogger("myclient");
+    private Logger LOGGER = LoggerFactory.getLogger("AutoFish");
 
     @Override
     public void onReceivedPacket(ReceivedPacketEvent event) {

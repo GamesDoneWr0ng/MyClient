@@ -23,7 +23,7 @@ import static net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action
 
 public class FastBreak extends Hack implements UpdateListener, SentPacketListener, BlockBreakingProgressListener {
     private PlayerActionC2SPacket toRemove;
-    private static final Logger LOGGER = LoggerFactory.getLogger("myclient");
+    private static final Logger LOGGER = LoggerFactory.getLogger("FastBreak");
     private final IMinecraftClient IClient = (IMinecraftClient) MinecraftClient.getInstance();
     private int ticks = 0;
 

@@ -13,4 +13,5 @@ public final class HackManager {
     public final AntiHunger antiHunger = new AntiHunger();
     public final AntiParticle antiParticle = new AntiParticle();
     public final FreeCam freeCam = new FreeCam();
+    public final Reach reach = new Reach();
 }

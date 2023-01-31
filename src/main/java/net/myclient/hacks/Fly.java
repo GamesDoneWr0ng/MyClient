@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class Fly extends Hack implements UpdateListener, SentPacketListener {
     private int counter = 70;
     private boolean hijackNext = false;
-    private static final Logger LOGGER = LoggerFactory.getLogger("myclient");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Fly");
 
     @Override
     public void onSentPacket(SentPacketEvent event) {
