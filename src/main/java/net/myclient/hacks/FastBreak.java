@@ -29,7 +29,7 @@ public class FastBreak extends Hack implements UpdateListener, SentPacketListene
 
     @Override
     public void onSentPacket(SentPacketEvent event) {
-        if (!(event.getPacket() instanceof PlayerActionC2SPacket ap)) {return;}
+        if (!(event.getPacket() instanceof PlayerActionC2SPacket ap)) return;
 
         if (ap.getAction() == START_DESTROY_BLOCK) {
             if (toRemove == null) {
@@ -60,7 +60,7 @@ public class FastBreak extends Hack implements UpdateListener, SentPacketListene
     public void onUpdate() {
         IClient.getInteractionManager().setBlockHitDelay(0);
 
-        if (toRemove == null) {return;}
+        if (toRemove == null) return;
 
         BlockPos pos = toRemove.getPos();
         assert MinecraftClient.getInstance().player != null;

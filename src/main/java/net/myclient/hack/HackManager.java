@@ -14,4 +14,5 @@ public final class HackManager {
     public final AntiParticle antiParticle = new AntiParticle();
     public final FreeCam freeCam = new FreeCam();
     public final Reach reach = new Reach();
+    public final KillAura killAura = new KillAura();
 }

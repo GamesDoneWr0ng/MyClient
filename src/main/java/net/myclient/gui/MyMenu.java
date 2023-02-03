@@ -39,6 +39,7 @@ public class MyMenu extends Screen {
         adder.add(ButtonWidget.builder(Text.literal("AntiParticle"), button -> this.hackManager.antiParticle.swich()).width(100).build());
         adder.add(ButtonWidget.builder(Text.literal("FreeCam"), button -> this.hackManager.freeCam.swich()).width(100).build());
         adder.add(ButtonWidget.builder(Text.literal("Reach"), button -> this.hackManager.reach.swich()).width(100).build());
+        adder.add(ButtonWidget.builder(Text.literal("Killaura"), button -> this.hackManager.killAura.swich()).width(100).build());
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);

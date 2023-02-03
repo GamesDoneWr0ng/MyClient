@@ -39,7 +39,7 @@ public class Fly extends Hack implements UpdateListener, SentPacketListener {
 
         player.getAbilities().setFlySpeed((float) speed);
 
-        if (player.isOnGround()) {return;}
+        if (player.isOnGround()) return;
         if (player.getVelocity().getY() < -0.032) {counter = 50;}
 
         if (--counter < 0) {

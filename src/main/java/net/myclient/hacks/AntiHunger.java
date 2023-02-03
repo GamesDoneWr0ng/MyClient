@@ -10,7 +10,7 @@ public class AntiHunger extends Hack implements SentPacketListener {
 
     @Override
     public void onSentPacket(SentPacketEvent event) {
-        if (!(event.getPacket() instanceof ClientCommandC2SPacket ap)) {return;}
+        if (!(event.getPacket() instanceof ClientCommandC2SPacket ap)) return;
         if (ap.getMode() == ClientCommandC2SPacket.Mode.START_SPRINTING) {
             event.cancel();
         }

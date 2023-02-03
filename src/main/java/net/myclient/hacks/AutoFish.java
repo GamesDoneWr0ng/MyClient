@@ -16,7 +16,7 @@ public class AutoFish extends Hack implements ReceivedPacketListener, CaughtFish
 
     @Override
     public void onReceivedPacket(ReceivedPacketEvent event) {
-        if (!(event.getPacket() instanceof EntitiesDestroyS2CPacket ap)) {return;}
+        if (!(event.getPacket() instanceof EntitiesDestroyS2CPacket ap)) return;
 
         int id = ap.getEntityIds().getInt(0);
         assert MinecraftClient.getInstance().world != null;

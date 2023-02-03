@@ -20,8 +20,7 @@ public interface BlockBreakingProgressListener extends Listener {
         }
 
         @Override
-        public void fire(ArrayList<BlockBreakingProgressListener> listeners)
-        {
+        public void fire(ArrayList<BlockBreakingProgressListener> listeners) {
             for(BlockBreakingProgressListener listener : listeners)
                 listener.onBlockBreakingProgress(this);
         }

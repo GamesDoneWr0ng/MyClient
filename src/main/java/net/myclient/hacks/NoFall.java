@@ -19,7 +19,7 @@ public class NoFall extends Hack implements SentPacketListener {
 
     @Override
     public void onSentPacket(SentPacketEvent event) {
-        if (!(event.getPacket() instanceof PlayerMoveC2SPacket ap)) {return;}
+        if (!(event.getPacket() instanceof PlayerMoveC2SPacket ap)) return;
 
         if (!ap.isOnGround()) {
             modifyOnGround(ap);
