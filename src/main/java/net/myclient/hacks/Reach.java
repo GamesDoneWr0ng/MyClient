@@ -8,8 +8,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -39,15 +39,16 @@ public class Reach extends Hack implements SentPacketListener {
             PlayerEntity player = MinecraftClient.getInstance().player;
             ClientWorld world = MinecraftClient.getInstance().world;
             assert player != null;
-            Entity closest = getEntityFromRay(world, player, 100);
+            HitResult hit = player.raycast(1000, MinecraftClient.getInstance().getTickDelta(),false);
+            Entity closest = getEntityFromRay(world, player, hit.squaredDistanceTo(player));
 
-            if (closest == null) {
-                return;
-            }
-
-            HitResult hit = MinecraftClient.getInstance().crosshairTarget;
             if (hit.getType() == HitResult.Type.BLOCK) {
-
+                if (closest == null) {
+                    teleport(player.getPos(), hit.getPos());
+                    PacketHelper.mine(new BlockPos(hit.getPos()));
+                    teleport(hit.getPos(), player.getPos());
+                    return;
+                }
             }
 
             teleport(player.getPos(), closest.getPos());
@@ -71,8 +72,6 @@ public class Reach extends Hack implements SentPacketListener {
             Vec3d relativePos = entityPos.subtract(playerPos);
 
             Vec3d closestPoint = playerPos.add(lookVec.multiply(lookVec.dotProduct(relativePos)));
-
-            world.addParticle(ParticleTypes.CRIT, true, closestPoint.x, closestPoint.y, closestPoint.z, 0, 0, 0);
 
             double[] pointArray = new double[]{closestPoint.x, closestPoint.y, closestPoint.z};
             Box bb = entity.getBoundingBox().offset(playerPos.negate());
