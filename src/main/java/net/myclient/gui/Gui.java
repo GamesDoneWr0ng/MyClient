@@ -24,12 +24,14 @@ public abstract class Gui extends Screen {
     }
 
     public void add(GridWidget.Adder adder, Hack hack) {
-        adder.add(ButtonWidget.builder(Text.literal(hack.getClass()+ (hack.isEnabled() ? ": On" : ": Off")), button -> hack.swich()).width(100).build());
+        String s = hack.getClass().toString();
+        adder.add(ButtonWidget.builder(Text.literal(s.substring(s.lastIndexOf(".") + 1).trim() + (hack.isEnabled() ? ": On" : ": Off")), button -> hack.swich()).width(100).build());
     }
 
     public void setScreen(GridWidget.Adder adder, Screen screen) {
         assert this.client != null;
-        adder.add(ButtonWidget.builder(Text.literal(screen.getClass().toString()), button -> this.client.setScreen(screen)).width(200).build());
+        String s = screen.getClass().toString();
+        adder.add(ButtonWidget.builder(Text.literal(s.substring(s.lastIndexOf(".") + 1)), button -> this.client.setScreen(screen)).width(200).build());
     }
 
     @Override
