@@ -17,7 +17,7 @@ public class World extends Gui {
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        add(adder, this.hackManager.fastBreak);
+        addToggle(adder, this.hackManager.fastBreak);
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);

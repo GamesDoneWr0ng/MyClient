@@ -12,6 +12,7 @@ import net.myclient.hack.HackManager;
 public abstract class Gui extends Screen {
     public final boolean showMenu;
     public Screen parent = null;
+    public Boolean isHack = false;
     public final HackManager hackManager = Main.INSTANCE.getHackManager();
 
     public Gui(boolean showMenu) {
@@ -24,10 +25,13 @@ public abstract class Gui extends Screen {
         this.client.setScreen(this.parent);
     }
 
-    public void add(GridWidget.Adder adder, Hack hack) {
+    public void addToggle(GridWidget.Adder adder, Hack hack) {
         String s = hack.getClass().toString();
-        adder.add(CyclingButtonWidget.builder(Text::literal).values("On", "Off").initially(hack.isEnabled() ? "On" : "Off").build(1,1,100,20, Text.literal(s.substring(s.lastIndexOf(".") + 1).trim()), (button, value) -> hack.swich()));
-        //adder.add(ButtonWidget.builder(Text.literal(s.substring(s.lastIndexOf(".") + 1).trim() + (hack.isEnabled() ? ": On" : ": Off")), button -> hack.swich()).width(100).build());
+        adder.add(CyclingButtonWidget.builder(
+                Text::literal).values("On", "Off").initially(hack.isEnabled() ? "On" : "Off")
+                .build(1,1,100,20,
+                        Text.literal(s.substring(s.lastIndexOf(".") + 1).trim())
+                        , (button, value) -> hack.swich()));
     }
 
     public void setScreen(GridWidget.Adder adder, Screen screen) {

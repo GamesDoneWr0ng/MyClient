@@ -17,11 +17,11 @@ public class Movement extends Gui {
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        add(adder, this.hackManager.fly);
-        add(adder, this.hackManager.noFall);
-        add(adder, this.hackManager.antiVelocity);
-        add(adder, this.hackManager.antiHunger);
-        add(adder, this.hackManager.freeCam);
+        addToggle(adder, this.hackManager.fly);
+        addToggle(adder, this.hackManager.noFall);
+        addToggle(adder, this.hackManager.antiVelocity);
+        addToggle(adder, this.hackManager.antiHunger);
+        addToggle(adder, this.hackManager.freeCam);
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);
