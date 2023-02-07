@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import net.myclient.events.SentPacketListener;
 import net.myclient.events.UpdateListener;
 import net.myclient.hack.Hack;
-import net.myclient.packetShit.PacketHelper;
+import net.myclient.util.PacketHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

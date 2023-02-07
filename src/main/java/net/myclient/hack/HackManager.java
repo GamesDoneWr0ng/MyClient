@@ -1,7 +1,6 @@
 package net.myclient.hack;
 
 import net.myclient.hacks.*;
-import net.myclient.packetShit.PacketLogger;
 
 public final class HackManager {
     public final Fly fly = new Fly();

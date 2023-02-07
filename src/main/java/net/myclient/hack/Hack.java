@@ -18,9 +18,7 @@ public abstract class Hack extends Feature {
         else
             onDisable();
     }
-    public final void swich(){
-        this.setEnabled(!this.isEnabled());
-    }
+    public final void swich() {this.setEnabled(!this.isEnabled());}
     
     protected void onEnable() {}
     protected void onDisable() {}

@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.myclient.events.SentPacketListener;
 import net.myclient.hack.Hack;
-import net.myclient.packetShit.PacketHelper;
+import net.myclient.util.PacketHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,22 +67,17 @@ public class Reach extends Hack implements SentPacketListener {
         double closestAngle = aimAssist;
 
         for (Entity entity : entities) {
-            if (entity == player) {continue;}
+            if (entity == player) continue;
             Vec3d entityPos = entity.getPos();
             Vec3d relativePos = entityPos.subtract(playerPos);
 
             Vec3d closestPoint = playerPos.add(lookVec.multiply(lookVec.dotProduct(relativePos)));
 
-            double[] pointArray = new double[]{closestPoint.x, closestPoint.y, closestPoint.z};
             Box bb = entity.getBoundingBox().offset(playerPos.negate());
-            double[] maxB = new double[]{bb.maxX, bb.maxY, bb.maxZ};
-            double[] minB = new double[]{bb.minX, bb.minY, bb.minZ};
-
-            for (int i = 0; i < pointArray.length; i++) {
-                pointArray[i] = Math.max(minB[i], Math.min(maxB[i], pointArray[i]));
-            }
-
-            closestPoint = new Vec3d(pointArray[0], pointArray[1], pointArray[2]);
+            double x = Math.max(bb.minX, Math.min(bb.maxX, closestPoint.x));
+            double y = Math.max(bb.minY, Math.min(bb.maxY, closestPoint.y));
+            double z = Math.max(bb.minZ, Math.min(bb.maxZ, closestPoint.z));
+            closestPoint = new Vec3d(x,y,z);
 
             double angle = lookVec.normalize().dotProduct(closestPoint.normalize());
             if (angle > closestAngle) {

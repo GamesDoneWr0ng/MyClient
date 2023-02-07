@@ -1,4 +1,4 @@
-package net.myclient.packetShit;
+package net.myclient.hacks;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 
 public class PacketLogger extends Hack implements SentPacketListener, ReceivedPacketListener {
     private static final Logger LOGGER = LogManager.getLogger("Packet Logger");
-
     private static Identifier getChannel(Packet<?> packet) {
         if (packet instanceof CustomPayloadC2SPacketAccessor) {
             return ((CustomPayloadC2SPacketAccessor) packet).getChannel();

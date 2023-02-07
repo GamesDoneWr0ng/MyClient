@@ -1,7 +1,9 @@
-package net.myclient.packetShit;
+package net.myclient.util;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -35,6 +37,22 @@ public class PacketHelper {
         assert client.player != null;
         ClientConnectionInvoker connection = (ClientConnectionInvoker) client.player.networkHandler.getConnection();
         PlayerActionC2SPacket packet = new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, pos, Direction.DOWN);
+        connection._sendImmediately(packet, null);
+    }
+
+    public static void modifyOnGround(PlayerMoveC2SPacket ap) {
+        PlayerEntity player = MinecraftClient.getInstance().player;
+        assert MinecraftClient.getInstance().player != null;
+        ClientConnectionInvoker connection = (ClientConnectionInvoker) MinecraftClient.getInstance().player.networkHandler.getConnection();
+
+        PlayerMoveC2SPacket.Full groundPacket = new PlayerMoveC2SPacket.Full(ap.getX(player.getX()), ap.getY(player.getY()), ap.getZ(player.getZ()), ap.getYaw(player.getYaw()), ap.getPitch(player.getPitch()), true);
+        connection._sendImmediately(groundPacket, null);
+    }
+
+    public static void stopSprinting() {
+        assert MinecraftClient.getInstance().player != null;
+        ClientConnectionInvoker connection = (ClientConnectionInvoker) MinecraftClient.getInstance().player.networkHandler.getConnection();
+        ClientCommandC2SPacket packet = new ClientCommandC2SPacket(MinecraftClient.getInstance().player, ClientCommandC2SPacket.Mode.STOP_SPRINTING);
         connection._sendImmediately(packet, null);
     }
 }

@@ -3,6 +3,7 @@ package net.myclient.hacks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PendingUpdateManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
@@ -63,17 +64,14 @@ public class FastBreak extends Hack implements UpdateListener, SentPacketListene
         if (toRemove == null) return;
 
         BlockPos pos = toRemove.getPos();
-        assert MinecraftClient.getInstance().player != null;
-        assert MinecraftClient.getInstance().world != null;
-        if (!MinecraftClient.getInstance().world.canPlayerModifyAt(MinecraftClient.getInstance().player, pos)) {
-            return;
-        }
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        assert player != null;
+        if (!player.world.canPlayerModifyAt(player, pos)) return;
 
-
-        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(pos);
+        BlockState blockState = player.world.getBlockState(pos);
 
         if (blockState != Blocks.AIR.getDefaultState()) {
-            ClientConnectionInvoker connection = (ClientConnectionInvoker) MinecraftClient.getInstance().player.networkHandler.getConnection();
+            ClientConnectionInvoker connection = (ClientConnectionInvoker) player.networkHandler.getConnection();
             connection._sendImmediately(toRemove, null);
         }
         toRemove = null;
@@ -84,8 +82,7 @@ public class FastBreak extends Hack implements UpdateListener, SentPacketListene
     {
         IClientPlayerInteractionManager im = IClient.getInteractionManager();
 
-        if(im.getCurrentBreakingProgress() >= 1)
-            return;
+        if (im.getCurrentBreakingProgress() >= 1) return;
 
         BlockPos blockPos = event.getBlockPos();
         Direction direction = event.getDirection();
