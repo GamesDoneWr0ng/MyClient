@@ -1,13 +1,12 @@
-package net.myclient.gui;
+package net.myclient.gui.movement;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.SimplePositioningWidget;
-import net.minecraft.text.Text;
+import net.myclient.gui.Gui;
 
-public class Farm extends Gui{
-    public Farm(boolean showMenu, Screen parent) {
+public class Movement extends Gui {
+    public Movement(boolean showMenu, Screen parent) {
         super(showMenu);
         this.parent = parent;
     }
@@ -18,7 +17,12 @@ public class Farm extends Gui{
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        adder.add(ButtonWidget.builder(Text.literal("AutoFish"), button -> this.hackManager.autoFish.swich()).width(100).build());
+        add(adder, this.hackManager.fly);
+        add(adder, this.hackManager.noFall);
+        add(adder, this.hackManager.antiVelocity);
+        add(adder, this.hackManager.antiHunger);
+        add(adder, this.hackManager.freeCam);
+
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);

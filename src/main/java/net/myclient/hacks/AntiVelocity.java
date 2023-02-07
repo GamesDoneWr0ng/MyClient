@@ -6,7 +6,7 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.myclient.events.ReceivedPacketListener;
 import net.myclient.hack.Hack;
 
-public class AnitVelocity extends Hack implements ReceivedPacketListener {
+public class AntiVelocity extends Hack implements ReceivedPacketListener {
     @Override
     public void onReceivedPacket(ReceivedPacketEvent event) {
         Packet<?> packet = event.getPacket();

@@ -1,9 +1,12 @@
 package net.myclient.gui;
 
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.SimplePositioningWidget;
-import net.minecraft.text.Text;
+import net.myclient.gui.combat.Combat;
+import net.myclient.gui.farm.Farm;
+import net.myclient.gui.misc.Misc;
+import net.myclient.gui.movement.Movement;
+import net.myclient.gui.world.World;
 
 public class MyMenu extends Gui {
     public MyMenu(boolean showMenu) {
@@ -16,11 +19,11 @@ public class MyMenu extends Gui {
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(1);
 
-        adder.add(ButtonWidget.builder(Text.literal("Movement"), button -> this.client.setScreen(new Movement(showMenu, this))).width(200).build());
-        adder.add(ButtonWidget.builder(Text.literal("Combat"), button -> this.client.setScreen(new Combat(showMenu, this))).width(200).build());
-        adder.add(ButtonWidget.builder(Text.literal("Farm"), button -> this.client.setScreen(new Farm(showMenu, this))).width(200).build());
-        adder.add(ButtonWidget.builder(Text.literal("World"), button -> this.client.setScreen(new World(showMenu, this))).width(200).build());
-        adder.add(ButtonWidget.builder(Text.literal("Misc"), button -> this.client.setScreen(new Misc(showMenu, this))).width(200).build());
+        setScreen(adder, new Movement(showMenu, this));
+        setScreen(adder, new Combat(showMenu, this));
+        setScreen(adder, new Farm(showMenu, this));
+        setScreen(adder, new World(showMenu, this));
+        setScreen(adder, new Misc(showMenu, this));
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);

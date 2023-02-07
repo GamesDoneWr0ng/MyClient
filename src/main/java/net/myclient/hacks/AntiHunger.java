@@ -6,7 +6,6 @@ import net.myclient.hack.Hack;
 import net.myclient.util.PacketHelper;
 
 public class AntiHunger extends Hack implements SentPacketListener {
-
     @Override
     public void onSentPacket(SentPacketEvent event) {
         if (!(event.getPacket() instanceof ClientCommandC2SPacket ap)) return;
