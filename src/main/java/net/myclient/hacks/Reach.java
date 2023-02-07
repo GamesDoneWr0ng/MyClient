@@ -37,8 +37,8 @@ public class Reach extends Hack implements SentPacketListener {
 
         if (packet instanceof HandSwingC2SPacket) {
             PlayerEntity player = MinecraftClient.getInstance().player;
-            ClientWorld world = MinecraftClient.getInstance().world;
             assert player != null;
+            ClientWorld world = (ClientWorld) player.world;
             HitResult hit = player.raycast(1000, MinecraftClient.getInstance().getTickDelta(),false);
             Entity closest = getEntityFromRay(world, player, hit.squaredDistanceTo(player));
 
@@ -68,6 +68,7 @@ public class Reach extends Hack implements SentPacketListener {
 
         for (Entity entity : entities) {
             if (entity == player) continue;
+            if (!entity.isAttackable()) continue;
             Vec3d entityPos = entity.getPos();
             Vec3d relativePos = entityPos.subtract(playerPos);
 

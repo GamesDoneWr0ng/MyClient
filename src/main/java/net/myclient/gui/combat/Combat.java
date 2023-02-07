@@ -1,10 +1,8 @@
 package net.myclient.gui.combat;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.SimplePositioningWidget;
-import net.minecraft.text.Text;
 import net.myclient.gui.Gui;
 
 public class Combat extends Gui {
@@ -18,9 +16,6 @@ public class Combat extends Gui {
         GridWidget gridWidget = new GridWidget();
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(2);
-
-        adder.add(ButtonWidget.builder(Text.literal("Reach: " + (this.hackManager.reach.isEnabled() ? "On" : "Off")), button -> this.hackManager.reach.swich()).width(100).build());
-        adder.add(ButtonWidget.builder(Text.literal("Killaura: " + (this.hackManager.killAura.isEnabled() ? "On" : "Off")), button -> this.hackManager.killAura.swich()).width(100).build());
 
         add(adder, this.hackManager.reach);
         add(adder, this.hackManager.killAura);

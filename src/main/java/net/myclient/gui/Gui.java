@@ -2,6 +2,7 @@ package net.myclient.gui;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;
 import net.myclient.Main;
@@ -25,7 +26,8 @@ public abstract class Gui extends Screen {
 
     public void add(GridWidget.Adder adder, Hack hack) {
         String s = hack.getClass().toString();
-        adder.add(ButtonWidget.builder(Text.literal(s.substring(s.lastIndexOf(".") + 1).trim() + (hack.isEnabled() ? ": On" : ": Off")), button -> hack.swich()).width(100).build());
+        adder.add(CyclingButtonWidget.builder(Text::literal).values("On", "Off").initially(hack.isEnabled() ? "On" : "Off").build(1,1,100,20, Text.literal(s.substring(s.lastIndexOf(".") + 1).trim()), (button, value) -> hack.swich()));
+        //adder.add(ButtonWidget.builder(Text.literal(s.substring(s.lastIndexOf(".") + 1).trim() + (hack.isEnabled() ? ": On" : ": Off")), button -> hack.swich()).width(100).build());
     }
 
     public void setScreen(GridWidget.Adder adder, Screen screen) {

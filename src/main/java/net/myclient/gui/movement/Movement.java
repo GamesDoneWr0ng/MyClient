@@ -23,7 +23,6 @@ public class Movement extends Gui {
         add(adder, this.hackManager.antiHunger);
         add(adder, this.hackManager.freeCam);
 
-
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);
         this.addDrawableChild(gridWidget);
