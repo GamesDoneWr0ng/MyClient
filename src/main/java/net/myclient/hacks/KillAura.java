@@ -6,6 +6,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.myclient.events.UpdateListener;
@@ -41,15 +42,15 @@ public class KillAura extends Hack implements UpdateListener {
                 closestAngle = -1;
             } else if (players != null) continue;
 
-            Vec3d entityPos = entity.getPos();
+            Vec3d entityPos = entity.getEyePos();
             Vec3d relativePos = entityPos.subtract(playerPos);
 
             Vec3d closestPoint = playerPos.add(lookVec.multiply(lookVec.dotProduct(relativePos)));
 
             Box bb = entity.getBoundingBox().offset(playerPos.negate());
-            double x = Math.max(bb.minX, Math.min(bb.maxX, closestPoint.x));
-            double y = Math.max(bb.minY, Math.min(bb.maxY, closestPoint.y));
-            double z = Math.max(bb.minZ, Math.min(bb.maxZ, closestPoint.z));
+            double x = MathHelper.clamp(closestPoint.x, bb.minX, bb.maxX);
+            double y = MathHelper.clamp(closestPoint.y, bb.minY, bb.maxY);
+            double z = MathHelper.clamp(closestPoint.z, bb.minZ, bb.maxZ);
             closestPoint = new Vec3d(x,y,z);
 
             if (closestPoint.squaredDistanceTo(Vec3d.ZERO) > 25) continue;

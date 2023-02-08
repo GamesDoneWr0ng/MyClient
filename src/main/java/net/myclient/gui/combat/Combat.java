@@ -7,7 +7,7 @@ import net.myclient.gui.Gui;
 
 public class Combat extends Gui {
     public Combat(boolean showMenu, Screen parent) {
-        super(showMenu);
+        super(showMenu, null);
         this.parent = parent;
     }
 

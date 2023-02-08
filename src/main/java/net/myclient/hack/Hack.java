@@ -7,8 +7,7 @@ public abstract class Hack extends Feature {
         return enabled;
     }
 
-    public final void setEnabled(boolean enabled)
-    {
+    public final void setEnabled(boolean enabled) {
         if(this.enabled == enabled)
             return;
         this.enabled = enabled;

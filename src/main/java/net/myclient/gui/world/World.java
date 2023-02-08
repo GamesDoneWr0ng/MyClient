@@ -7,7 +7,7 @@ import net.myclient.gui.Gui;
 
 public class World extends Gui {
     public World(boolean showMenu, Screen parent) {
-        super(showMenu);
+        super(showMenu, null);
         this.parent = parent;
     }
 

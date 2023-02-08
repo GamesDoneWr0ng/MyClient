@@ -10,7 +10,7 @@ import net.myclient.gui.world.World;
 
 public class MyMenu extends Gui {
     public MyMenu(boolean showMenu) {
-        super(showMenu);
+        super(showMenu, null);
     }
 
     @Override

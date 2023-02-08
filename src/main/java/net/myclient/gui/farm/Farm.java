@@ -7,7 +7,7 @@ import net.myclient.gui.Gui;
 
 public class Farm extends Gui {
     public Farm(boolean showMenu, Screen parent) {
-        super(showMenu);
+        super(showMenu, null);
         this.parent = parent;
     }
 

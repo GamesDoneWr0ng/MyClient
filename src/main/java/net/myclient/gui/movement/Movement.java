@@ -7,7 +7,7 @@ import net.myclient.gui.Gui;
 
 public class Movement extends Gui {
     public Movement(boolean showMenu, Screen parent) {
-        super(showMenu);
+        super(showMenu, null);
         this.parent = parent;
     }
 
@@ -17,11 +17,11 @@ public class Movement extends Gui {
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        addToggle(adder, this.hackManager.fly);
+        setScreen(adder, new FlyGui(showMenu, this.hackManager.fly, this));
         addToggle(adder, this.hackManager.noFall);
         addToggle(adder, this.hackManager.antiVelocity);
         addToggle(adder, this.hackManager.antiHunger);
-        addToggle(adder, this.hackManager.freeCam);
+        setScreen(adder, new FreeCamGui(showMenu, this.hackManager.freeCam, this));
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);

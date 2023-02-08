@@ -7,6 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import net.myclient.events.SentPacketListener;
 import net.myclient.events.UpdateListener;
 import net.myclient.hack.Hack;
+import net.myclient.settings.SliderSetting;
 import net.myclient.util.PacketHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,12 @@ public class Fly extends Hack implements UpdateListener, SentPacketListener {
     private boolean hijackNext = false;
     private static final Logger LOGGER = LoggerFactory.getLogger("Fly");
 
+    public final SliderSetting speed = new SliderSetting("Speed", 0.1, 0.01, 1, 0.01);
+    public final SliderSetting sprintMultiplier = new SliderSetting("SprintMultiplier", 4, 0, 10, 0.01);
+
     @Override
     public void onSentPacket(SentPacketEvent event) {
-        if (!(event.getPacket() instanceof PlayerMoveC2SPacket)) {return;}
+        if (!(event.getPacket() instanceof PlayerMoveC2SPacket)) return;
 
         if (hijackNext) {
             hijackNext = false;
@@ -29,14 +33,13 @@ public class Fly extends Hack implements UpdateListener, SentPacketListener {
     }
 
     @Override
-    public void onUpdate()
-    {
+    public void onUpdate() {
         PlayerEntity player = MinecraftClient.getInstance().player;
         assert player != null;
 
         player.getAbilities().allowFlying = true;
-        double speed = MinecraftClient.getInstance().options.sprintKey.isPressed() ? 0.4 : 0.1;
 
+        double speed = (MinecraftClient.getInstance().options.sprintKey.isPressed() ? sprintMultiplier.getValue() : 1) * this.speed.getValue();
         player.getAbilities().setFlySpeed((float) speed);
 
         if (player.isOnGround()) return;

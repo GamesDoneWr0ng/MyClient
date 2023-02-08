@@ -9,22 +9,25 @@ import net.myclient.events.SentPacketListener;
 import net.myclient.events.UpdateListener;
 import net.myclient.hack.Hack;
 import net.myclient.mixinterface.IClientPlayerEntity;
+import net.myclient.settings.SliderSetting;
 
 public class FreeCam extends Hack implements SentPacketListener, PlayerMoveListener, UpdateListener {
     private Vec3d pos;
+    public final SliderSetting speed = new SliderSetting("Speed", 1.5, 0.01, 10, 0.01);
+    public final SliderSetting sprintMultiplier = new SliderSetting("SprintMultiplier", 2.6, 0, 10, 0.01);
 
     @Override
     public void onUpdate() {
         MinecraftClient client = MinecraftClient.getInstance();
         PlayerEntity player = client.player;
         assert player != null;
-        
-        double speed = client.options.sprintKey.isPressed() ? 4 : 1.5;
+
+        double speed = (MinecraftClient.getInstance().options.sprintKey.isPressed() ? sprintMultiplier.getValue() : 1) * this.speed.getValue();
         double xVel = client.options.forwardKey.isPressed() ? 1 : client.options.backKey.isPressed() ? -1 : 0;
         double zVel = client.options.rightKey.isPressed() ? 1 : client.options.leftKey.isPressed() ? -1 : 0;
         double yVel = client.options.jumpKey.isPressed() ? 1 : client.options.sneakKey.isPressed() ? -1 : 0;
 
-        Vec3d velocity = new Vec3d(xVel, yVel, zVel).rotateY((float) -Math.toRadians(player.getYaw() + 90)).multiply(speed);
+        Vec3d velocity = new Vec3d(xVel, yVel, zVel).rotateY((float) -Math.toRadians(player.getYaw() + 90)).normalize().multiply(speed);
 
         player.setVelocity(velocity);
     }

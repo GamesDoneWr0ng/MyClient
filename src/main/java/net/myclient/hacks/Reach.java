@@ -11,6 +11,7 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.myclient.events.SentPacketListener;
@@ -75,9 +76,9 @@ public class Reach extends Hack implements SentPacketListener {
             Vec3d closestPoint = playerPos.add(lookVec.multiply(lookVec.dotProduct(relativePos)));
 
             Box bb = entity.getBoundingBox().offset(playerPos.negate());
-            double x = Math.max(bb.minX, Math.min(bb.maxX, closestPoint.x));
-            double y = Math.max(bb.minY, Math.min(bb.maxY, closestPoint.y));
-            double z = Math.max(bb.minZ, Math.min(bb.maxZ, closestPoint.z));
+            double x = MathHelper.clamp(closestPoint.x, bb.minX, bb.maxX);
+            double y = MathHelper.clamp(closestPoint.y, bb.minY, bb.maxY);
+            double z = MathHelper.clamp(closestPoint.z, bb.minZ, bb.maxZ);
             closestPoint = new Vec3d(x,y,z);
 
             double angle = lookVec.normalize().dotProduct(closestPoint.normalize());
