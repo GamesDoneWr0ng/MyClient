@@ -3,6 +3,7 @@ package net.myclient.hacks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
@@ -11,12 +12,15 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.myclient.events.UpdateListener;
 import net.myclient.hack.Hack;
+import net.myclient.settings.CycleSetting;
 import net.myclient.util.PacketHelper;
 
 import java.util.List;
 
 public class KillAura extends Hack implements UpdateListener {
     float cooldown = 1;
+    public final CycleSetting target = new CycleSetting("Target", new String[]{"Mobs", "Players", "All"}, "All");
+    public final CycleSetting mobTarget = new CycleSetting("MobTarget", new String[]{"Hostile", "Passive", "All"}, "All");
     @Override
     public void onUpdate() {
         PlayerEntity player = MinecraftClient.getInstance().player;
@@ -35,8 +39,13 @@ public class KillAura extends Hack implements UpdateListener {
         Vec3d lookVec = player.getRotationVec(1.0f);
 
         for (Entity entity : entities) {
+            if (entity == player) continue;
             if (!entity.isAlive()) continue;
             if (!entity.isAttackable()) continue;
+
+            if (entity instanceof PlayerEntity && target.getValue().equals("Mobs")) continue;
+            if (entity instanceof PassiveEntity && mobTarget.getValue().equals("Hostile")) continue;
+
             if (entity instanceof PlayerEntity) {
                 players.add((PlayerEntity) entity);
                 closestAngle = -1;

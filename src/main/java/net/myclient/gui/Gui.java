@@ -2,13 +2,11 @@ package net.myclient.gui;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.client.realms.gui.screen.RealmsSlotOptionsScreen;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
 import net.myclient.Main;
 import net.myclient.hack.Hack;
 import net.myclient.hack.HackManager;
+import net.myclient.settings.CycleSetting;
 import net.myclient.settings.SliderSetting;
 
 public abstract class Gui extends Screen {
@@ -38,14 +36,23 @@ public abstract class Gui extends Screen {
     }
 
     public void addSlider(GridWidget.Adder adder, SliderSetting setting) {
-        adder.add(new SliderWidget(1, 1, 100, 20, Text.literal(setting.getName()), (setting.getValue() - setting.getMinimum()) / setting.getRange()) {
+        adder.add(new SliderWidget(1, 1, 100, 20, Text.literal(setting.getName() + ": " + Math.round(setting.getValue()*1000)/1000d), (setting.getValue() - setting.getMinimum()) / (setting.getRange())) {
             @Override
-            protected void updateMessage() {}
+            protected void updateMessage() {
+                this.setMessage(Text.literal(setting.getName() + ": " + Math.round(setting.getValue()*1000)/1000d));
+            }
             @Override
             protected void applyValue() {
-                setting.setValue((value + setting.getMinimum()) * setting.getRange());
+                setting.setValue(value * setting.getRange() + setting.getMinimum());
             }
         });
+    }
+
+    public void addCycle(GridWidget.Adder adder, CycleSetting setting) {
+        adder.add(CyclingButtonWidget.builder(Text::literal).values(setting.getOptions()).initially(setting.getValue())
+                .build(1,1,100,20, Text.literal(setting.getName())
+                        , ((button, value) -> setting.setValue(value)))
+        );
     }
 
     public void setScreen(GridWidget.Adder adder, Gui screen) {

@@ -17,8 +17,8 @@ public class Combat extends Gui {
         gridWidget.getMainPositioner().margin(4, 4, 4, 0);
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        addToggle(adder, this.hackManager.reach);
-        addToggle(adder, this.hackManager.killAura);
+        setScreen(adder, new ReachGui(showMenu, this.hackManager.reach, this));
+        setScreen(adder, new KillAuraGui(showMenu, this.hackManager.killAura, this));
 
         gridWidget.recalculateDimensions();
         SimplePositioningWidget.setPos(gridWidget, 0, 0, this.width, this.height, 0.5f, 0.25f);

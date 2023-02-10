@@ -3,11 +3,14 @@ package net.myclient.hacks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -16,6 +19,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.myclient.events.SentPacketListener;
 import net.myclient.hack.Hack;
+import net.myclient.settings.SliderSetting;
+import net.myclient.settings.CycleSetting;
 import net.myclient.util.PacketHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +29,13 @@ import java.util.List;
 
 public class Reach extends Hack implements SentPacketListener {
     private Packet<?> lastpacket;
-    private double aimAssist = Math.cos(Math.toRadians(5));
-    private double maxTeleportDistance = 9;
+    public final SliderSetting maxTpDistance = new SliderSetting("MaxTpDistance", 9, 1, 10, 0.5);
+    public final SliderSetting aimAssist = new SliderSetting("AimAssist", 5, 0, 90, 0.1);
+    public final CycleSetting target = new CycleSetting("Target", new String[]{"Mobs", "Players", "All"}, "All");
+    public final CycleSetting mobTarget = new CycleSetting("MobTarget", new String[]{"Hostile", "Passive", "All"}, "All");
+
     private final Logger LOGGER = LoggerFactory.getLogger("Reach");
+
     @Override
     public void onSentPacket(SentPacketEvent event) {
         Packet<?> packet = event.getPacket();
@@ -43,12 +52,16 @@ public class Reach extends Hack implements SentPacketListener {
             HitResult hit = player.raycast(1000, MinecraftClient.getInstance().getTickDelta(),false);
             Entity closest = getEntityFromRay(world, player, hit.squaredDistanceTo(player));
 
-            if (hit.getType() == HitResult.Type.BLOCK) {
-                if (closest == null) {
+            if (closest == null) {
+                if (hit.getType() == HitResult.Type.BLOCK) {
                     teleport(player.getPos(), hit.getPos());
                     PacketHelper.mine(new BlockPos(hit.getPos()));
                     teleport(hit.getPos(), player.getPos());
                     return;
+                } else if (hit.getType() == HitResult.Type.MISS) {
+                    return;
+                } else {
+                    closest = ((EntityHitResult) hit).getEntity();
                 }
             }
 
@@ -65,15 +78,21 @@ public class Reach extends Hack implements SentPacketListener {
         List<Entity> entities = world.getEntitiesByClass(Entity.class, player.getBoundingBox().expand(lookVec.x * range, lookVec.y * range, lookVec.z * range).expand(1.0D), entity -> !entity.isSpectator());
 
         Entity closestEntity = null;
-        double closestAngle = aimAssist;
+        double closestAngle = Math.cos(Math.toRadians(aimAssist.getValue()));
 
         for (Entity entity : entities) {
             if (entity == player) continue;
             if (!entity.isAttackable()) continue;
+            if (!entity.isAlive()) continue;
+
+            if (entity instanceof PlayerEntity == target.getValue().equals("Mobs")) continue;
+            if (entity instanceof PassiveEntity == mobTarget.getValue().equals("Hostile")) continue;
+
             Vec3d entityPos = entity.getPos();
             Vec3d relativePos = entityPos.subtract(playerPos);
 
             Vec3d closestPoint = playerPos.add(lookVec.multiply(lookVec.dotProduct(relativePos)));
+            MinecraftClient.getInstance().world.addParticle(ParticleTypes.CRIT, true, closestPoint.x, closestPoint.y, closestPoint.z, 0, 0, 0);
 
             Box bb = entity.getBoundingBox().offset(playerPos.negate());
             double x = MathHelper.clamp(closestPoint.x, bb.minX, bb.maxX);
@@ -93,8 +112,8 @@ public class Reach extends Hack implements SentPacketListener {
     private void teleport(Vec3d from, Vec3d to) {
         to = to.add(from.subtract(to).normalize().multiply(2));
         double distance = from.squaredDistanceTo(to);
-        while (distance > (maxTeleportDistance * maxTeleportDistance)) {
-            Vec3d nextPosition = from.add(to.subtract(from).normalize().multiply(maxTeleportDistance));
+        while (distance > (maxTpDistance.getValue() * maxTpDistance.getValue())) {
+            Vec3d nextPosition = from.add(to.subtract(from).normalize().multiply(maxTpDistance.getValue()));
             PacketHelper.sendPosition(nextPosition);
             from = nextPosition;
             distance = from.squaredDistanceTo(to);
