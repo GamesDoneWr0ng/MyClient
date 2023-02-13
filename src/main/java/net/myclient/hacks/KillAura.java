@@ -15,6 +15,7 @@ import net.myclient.hack.Hack;
 import net.myclient.settings.CycleSetting;
 import net.myclient.util.PacketHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KillAura extends Hack implements UpdateListener {
@@ -31,7 +32,7 @@ public class KillAura extends Hack implements UpdateListener {
 
         World world = player.world;
         List<Entity> entities = world.getOtherEntities(player, player.getBoundingBox().expand(3));
-        List<PlayerEntity> players = null;
+        List<PlayerEntity> players = new ArrayList<>();
         Entity closestEntity = null;
         double closestAngle = -1;
 
@@ -49,7 +50,7 @@ public class KillAura extends Hack implements UpdateListener {
             if (entity instanceof PlayerEntity) {
                 players.add((PlayerEntity) entity);
                 closestAngle = -1;
-            } else if (players != null) continue;
+            } else if (players.size() != 0) continue;
 
             Vec3d entityPos = entity.getEyePos();
             Vec3d relativePos = entityPos.subtract(playerPos);

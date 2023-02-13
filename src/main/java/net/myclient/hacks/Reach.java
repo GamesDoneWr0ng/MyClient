@@ -9,7 +9,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -92,7 +91,6 @@ public class Reach extends Hack implements SentPacketListener {
             Vec3d relativePos = entityPos.subtract(playerPos);
 
             Vec3d closestPoint = playerPos.add(lookVec.multiply(lookVec.dotProduct(relativePos)));
-            MinecraftClient.getInstance().world.addParticle(ParticleTypes.CRIT, true, closestPoint.x, closestPoint.y, closestPoint.z, 0, 0, 0);
 
             Box bb = entity.getBoundingBox().offset(playerPos.negate());
             double x = MathHelper.clamp(closestPoint.x, bb.minX, bb.maxX);
